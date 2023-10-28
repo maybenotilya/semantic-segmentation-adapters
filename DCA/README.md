@@ -2,8 +2,7 @@
 This folder contains adapter and Dockerfile for [DCA](https://github.com/Luffy03/DCA) algorithm
 
 ## Building Docker Image
-1. Download weights from [here](https://drive.google.com/drive/folders/1oenWpYADqd-tTx7JeDQknxRNd3mgW2kQ) and put them into ./weights folder
-2. Build docker image using `Dockerfile`:
+Build docker image using `Dockerfile`:
 ```
 docker build . -t dca -f Dockerfile
 ```

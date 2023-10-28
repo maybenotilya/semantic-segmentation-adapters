@@ -13,8 +13,8 @@ from torch.utils.data import SequentialSampler, RandomSampler
 from ever.api.data import CrossValSamplerGenerator
 import numpy as np
 import logging
-from data.siamese_tf import *
-from utils.tools import seed_worker
+from DCA.data.siamese_tf import *
+from DCA.utils.tools import seed_worker
 
 logger = logging.getLogger(__name__)
 

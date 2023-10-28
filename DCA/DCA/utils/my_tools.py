@@ -16,7 +16,7 @@ import torch.nn.functional as F
 import torch
 import torch.nn as nn
 import numpy as np
-from utils.densecrf import get_crf
+from DCA.utils.densecrf import get_crf
 
 
 def pad_image(img, target_size):

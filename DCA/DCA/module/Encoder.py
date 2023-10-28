@@ -81,7 +81,7 @@ class Classifier_Module(nn.Module):
         return out
 
 
-from module.resnet import ResNetEncoder
+from DCA.module.resnet import ResNetEncoder
 import ever as er
 
 

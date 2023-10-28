@@ -1,8 +1,8 @@
 import ever as er
-from module.resnet import ResNetEncoder
+from DCA.module.resnet import ResNetEncoder
 import torch.nn as nn
 import torch.nn.functional as F
-from module.Encoder import Classifier_Module
+from DCA.module.Encoder import Classifier_Module
 
 
 class ReductionLayer(nn.Module):

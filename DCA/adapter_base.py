@@ -1,8 +1,8 @@
 import numpy as np
 
-from abc import ABC, abstractmethod
 import argparse
 from pathlib import Path
+from abc import ABC, abstractmethod
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -11,9 +11,8 @@ def get_args():
     return parser.parse_args()
 
 
-# Adapter accepts image as numpy array and returns mask as image in numpy array 
 class AdapterBase(ABC):
-    """Base adapter"""
+    """Adapter accepts image as numpy array and returns mask as image in numpy arrayr"""
 
     def process(self, image):
         # image - RGB

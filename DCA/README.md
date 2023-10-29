@@ -13,7 +13,13 @@ To run the container use the following command:
 docker run --rm \
 -v <IMAGES_PATH>:/DCA/input \
 -v <OUTPUT_PATH>:/DCA/output \
-dca
+dca [OPTIONAL_ARGS]
+```
+
+Optional arguments are:
+```
+-m, --mode     Network mode to segment model, Urban or Rural, default is Urban
+-c, --colour   True if outpul must be in coloured RGB format, False if black mask, default is False
 ```
 
 Here `<IMAGES_PATH>` is the path where your image dataset is stored on the host machine and `<OUTPUT_PATH>` is the path where the results will be saved. 

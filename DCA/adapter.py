@@ -5,12 +5,11 @@ import argparse
 from pathlib import Path
 
 from adapter_base import AdapterBase
-from utils.tools import *
-from utils.my_tools import *
-from module.Encoder import Deeplabv2
-from albumentations import Normalize
-from albumentations import *
-import ever as er
+from DCA.utils.tools import *
+from DCA.utils.my_tools import *
+from DCA.module.Encoder import Deeplabv2
+from albumentations import Normalize, Compose
+import ever
 
 def max_power_of_2(num : int):
     p: int = 2
@@ -51,7 +50,7 @@ class DcaAdapter(AdapterBase):
             # Normalize(mean=(123.675, 116.28, 103.53),
             #           std=(58.395, 57.12, 57.375),
             #           max_pixel_value=1, always_apply=True),
-            er.preprocess.albu.ToTensor()
+            ever.preprocess.albu.ToTensor()
         ], is_check_shapes=False)
         blob = transformer(image=image, mask=mask)
         image = blob['image'].to(torch.device('cuda' if torch.cuda.is_available() else 'cpu'))

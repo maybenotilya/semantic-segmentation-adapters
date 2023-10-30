@@ -4,7 +4,6 @@ import ever
 import torch
 import cv2
 
-import argparse
 from pathlib import Path
 
 from adapter_base import AdapterBase

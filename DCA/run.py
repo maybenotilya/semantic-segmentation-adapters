@@ -1,10 +1,8 @@
-from cv2 import imwrite
 from skimage.io import imread
 import numpy as np
 
 from pathlib import Path
 import os
-import argparse
 
 from adapter_utils import max_power_of_2, get_args
 from adapter import DcaAdapter

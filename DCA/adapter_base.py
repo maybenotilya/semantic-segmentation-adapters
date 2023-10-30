@@ -4,15 +4,8 @@ import argparse
 from pathlib import Path
 from abc import ABC, abstractmethod
 
-def get_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-i", "--input", type=Path, required=True, help="Input images path.")
-    parser.add_argument("-o", "--output", type=Path, required=True, help="Path where to save resulting masks.")
-    return parser.parse_args()
-
-
 class AdapterBase(ABC):
-    """Adapter accepts image as numpy array and returns mask as image in numpy arrayr"""
+    """Adapter accepts image as numpy array and returns mask as image in numpy array"""
 
     def process(self, image):
         # image - RGB

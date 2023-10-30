@@ -1,4 +1,5 @@
 import numpy as np
+import torch
 
 import argparse
 
@@ -12,23 +13,7 @@ def max_power_of_2(num : int):
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("-m", "--mode", type=str, default="Urban", help="Mode to segment images with: Urban or Rural, default is Urban")
-    parser.add_argument("-c", "--colour", type=bool, default=False, help="Colours result images, default is False")
+    parser.add_argument("-d", "--device", type=str, default='cuda' if torch.cuda.is_available() else 'cpu', help="Which device to run network on, default is GPU if available, otherwise CPU")
+    parser.add_argument("-f", "--factor", type=int, default=2, help="Factor shows how images must be scaled to create patches, for factor = n there will be n^2 patches, default is 2")
     return parser.parse_args()
-
-def colour_mask(image: np.ndarray):
-    colors = {
-        0 : (255, 255, 255), # background
-        1 : (255, 0, 0), # building
-        2 : (255, 255, 0), # road
-        3 : (0, 0, 255), # water
-        4 : (128, 0, 128), # barren
-        5 : (0, 128, 0), # forest
-        6 : (141, 85, 36), # agriculture
-    }
-    new_image = np.ndarray(shape=(image.shape[0], image.shape[1], 3))
-    for x in range(image.shape[0]):
-        for y in range(image.shape[1]):
-            new_image[x, y] = colors[image[x, y]]
-    return new_image
-
 

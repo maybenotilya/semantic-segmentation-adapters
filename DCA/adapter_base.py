@@ -2,6 +2,7 @@ import numpy as np
 
 from abc import ABC, abstractmethod
 
+
 class AdapterBase(ABC):
     """Adapter accepts image as numpy array and returns mask as image in numpy array"""
 

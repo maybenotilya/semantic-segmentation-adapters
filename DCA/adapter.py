@@ -1,12 +1,13 @@
 import numpy as np
-from albumentations import Normalize, Compose
 import ever
 import torch
 import cv2
 
 from pathlib import Path
+from albumentations import Normalize, Compose
 
 from adapter_base import AdapterBase
+from adapter_utils import max_power_of_2
 from DCA.utils.my_tools import pre_slide
 from DCA.module.Encoder import Deeplabv2
 

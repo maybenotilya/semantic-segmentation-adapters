@@ -1,10 +1,11 @@
 from skimage.io import imread
 import numpy as np
-
-from pathlib import Path
 import os
 
-from adapter_utils import max_power_of_2, get_args
+from pathlib import Path
+from skimage.io import imread
+
+from adapter_utils import get_args
 from adapter import DcaAdapter
 
 

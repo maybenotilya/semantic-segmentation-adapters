@@ -27,7 +27,7 @@ def pad_image(img, target_size):
     return padded_img
 
 
-def pre_slide(model, image, num_classes=7, tile_size=(512, 512), tta=False):
+def pre_slide(model, image, num_classes=7, tile_size=(512, 512), tta=False, device='cpu'):
     image_size = image.shape  # bigger than (1, 3, 512, 512), i.e. (1,3,1024,1024)
     overlap = 1 / 2  # 每次滑动的重合率为1/2
 
@@ -35,9 +35,9 @@ def pre_slide(model, image, num_classes=7, tile_size=(512, 512), tta=False):
     tile_rows = int(ceil((image_size[2] - tile_size[0]) / stride) + 1)  # 行滑动步数:(1024-769)/513 + 1 = 2
     tile_cols = int(ceil((image_size[3] - tile_size[1]) / stride) + 1)  # 列滑动步数:(2048-769)/513 + 1 = 4
 
-    full_probs = torch.zeros((1, num_classes, image_size[2], image_size[3])).to('cuda' if torch.cuda.is_available() else 'cpu')  # 初始化全概率矩阵 shape(1024,2048,19)
+    full_probs = torch.zeros((1, num_classes, image_size[2], image_size[3])).to(device)  # 初始化全概率矩阵 shape(1024,2048,19)
 
-    count_predictions = torch.zeros((1, 1, image_size[2], image_size[3])).to('cuda' if torch.cuda.is_available() else 'cpu')  # 初始化计数矩阵 shape(1024,2048,19)
+    count_predictions = torch.zeros((1, 1, image_size[2], image_size[3])).to(device)  # 初始化计数矩阵 shape(1024,2048,19)
     tile_counter = 0  # 滑动计数0
 
     for row in range(tile_rows):  # row = 0,1

@@ -36,15 +36,15 @@ def main():
 
     adapter = DcaAdapter(factor=args.factor, model=args.model, device=device)
 
-    input_path = Path(__file__).parent / "input"
-    output_path = Path(__file__).parent / "output"
+    input_dir = Path("/", "DCA", "input")
+    output_dir = Path("/", "DCA", "output")
 
-    for fname in os.listdir(input_path):
+    for fname in os.listdir(input_dir):
         print(fname)
-        image = imread(input_path / fname)
+        image = imread(input_dir / fname)
         mask = adapter.process(image)
-        output_name = '.'.join(fname.split('.')[:-1]) if fname.count('.') != 0 else fname
-        np.save(output_path / output_name, mask)
+        output_path = Path(output_dir, Path(fname).stem)
+        np.save(output_path, mask)
 
 
 if __name__ == "__main__":

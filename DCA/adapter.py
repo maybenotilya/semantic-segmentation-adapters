@@ -59,9 +59,11 @@ class DcaAdapter(AdapterBase):
         self._image_size = max_power_of_2(min(image.shape[0], image.shape[1]))
         image = cv2.resize(image, (self._image_size, self._image_size), interpolation=cv2.INTER_AREA)
         print(image.shape)
+        mean = np.mean(image, axis=(0, 1))
+        std = np.std(image, axis=(0, 1))
         transformer = Compose([
-            Normalize(mean=(73.53223948, 80.01710095, 74.59297778),
-                      std=(41.5113661, 35.66528876, 33.75830885),
+            Normalize(mean=mean,
+                      std=std,
                       max_pixel_value=1, always_apply=True),
             ever.preprocess.albu.ToTensor()
         ], is_check_shapes=False)

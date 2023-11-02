@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import numpy as np
-import os
+import logging
 
 from pathlib import Path
 from skimage.io import imread
@@ -21,17 +21,17 @@ from skimage.io import imread
 from adapter_utils import get_args
 from adapter import DcaAdapter
 
+logging.basicConfig(level=logging.INFO)
+
 
 def main():
-    print("Starting work")
-
     args = get_args()
     if args.device.lower() == "cpu":
         device = "cpu"
     elif args.device.lower() in ("cuda", "gpu"):
         device = "cuda"
     else:
-        print(f"Failed to recognize device {args.device}")
+        logging.error(f" Failed to recognize device {args.device}")
         return
 
     adapter = DcaAdapter(factor=args.factor, model=args.model, device=device)
@@ -39,11 +39,12 @@ def main():
     input_dir = Path("/", "DCA", "input")
     output_dir = Path("/", "DCA", "output")
 
-    for fname in os.listdir(input_dir):
-        print(fname)
-        image = imread(input_dir / fname)
+    for file_path in input_dir.iterdir():
+        logging.info(f" Image {file_path}")
+        image = imread(file_path)
         mask = adapter.process(image)
-        output_path = Path(output_dir, Path(fname).stem)
+        output_path = output_dir / Path(file_path.stem).with_suffix('.npy')
+        logging.info(f" Saving to {output_path}")
         np.save(output_path, mask)
 
 

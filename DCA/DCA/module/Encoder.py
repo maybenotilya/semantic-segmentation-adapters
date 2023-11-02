@@ -90,7 +90,6 @@ class Deeplabv2(er.ERModule):
         super(Deeplabv2, self).__init__(config)
         self.encoder = ResNetEncoder(self.config.backbone)
         if self.config.multi_layer:
-            print('Use multi_layer!')
             if self.config.cascade:
                 if self.config.use_ppm:
                     self.layer5 = PPMBilinear(**self.config.ppm1)

@@ -20,8 +20,8 @@ import cv2
 from pathlib import Path
 from albumentations import Normalize, Compose
 
-from adapter_base import AdapterBase
-from adapter_utils import max_power_of_2
+from common.adapter.adapter_base import AdapterBase
+from utils import max_power_of_2
 from DCA.utils.my_tools import pre_slide
 from DCA.module.Encoder import Deeplabv2
 
@@ -68,14 +68,14 @@ class DcaAdapter(AdapterBase):
             ever.preprocess.albu.ToTensor()
         ], is_check_shapes=False)
         blob = transformer(image=image)
-        image = blob['image'].to(self._device)
+        image = blob["image"].to(self._device)
         image = image[None, :]
         return image
 
     def _build_model(self):
         model = Deeplabv2(dict(
             backbone=dict(
-                resnet_type='resnet50',
+                resnet_type="resnet50",
                 output_stride=16,
                 pretrained=True,
             ),

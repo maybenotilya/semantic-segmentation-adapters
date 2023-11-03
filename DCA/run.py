@@ -18,26 +18,26 @@ import logging
 from pathlib import Path
 from skimage.io import imread
 
-from adapter_utils import get_args
+from utils import get_args
 from adapter import DcaAdapter
 
 logging.basicConfig(level=logging.INFO)
 
 
-def main():
+if __name__ == "__main__":
     args = get_args()
     if args.device.lower() == "cpu":
         device = "cpu"
     elif args.device.lower() in ("cuda", "gpu"):
         device = "cuda"
     else:
-        logging.error(f" Failed to recognize device {args.device}")
-        return
+        device = "cuda"
+        logging.error(f" Failed to recognize device {args.device}, default GPU is set")
 
     adapter = DcaAdapter(factor=args.factor, model=args.model, device=device)
 
-    input_dir = Path("/", "DCA", "input")
-    output_dir = Path("/", "DCA", "output")
+    input_dir = args.input
+    output_dir = args.output
 
     for file_path in input_dir.iterdir():
         logging.info(f" Image {file_path}")
@@ -46,7 +46,3 @@ def main():
         output_path = output_dir / Path(file_path.stem).with_suffix('.npy')
         logging.info(f" Saving to {output_path}")
         np.save(output_path, mask)
-
-
-if __name__ == "__main__":
-    main()

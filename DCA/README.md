@@ -19,7 +19,7 @@ dca [OPTIONAL_ARGS]
 Optional arguments are:
 ```
 -f, --factor       Factor shows how images must be scaled to create patches, for factor = n there will be n^2 patches (default: 2)
--m, --model        Pretrained model path (default: weights/Urban.pth)
+-m, --model        Pretrained model path (default: /DCA/weights/Urban.pth)
 -d, --device       Which device to run network on (default: GPU)
 -i, --input        Images input directory
 -o, --output       Masks output directory

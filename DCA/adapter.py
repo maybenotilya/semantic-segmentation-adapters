@@ -58,7 +58,6 @@ class DcaAdapter(AdapterBase):
     def _transform_image(self, image: np.ndarray):
         self._image_size = max_power_of_2(min(image.shape[0], image.shape[1]))
         image = cv2.resize(image, (self._image_size, self._image_size), interpolation=cv2.INTER_AREA)
-        print(image.shape)
         mean = np.mean(image, axis=(0, 1))
         std = np.std(image, axis=(0, 1))
         transformer = Compose([
@@ -110,4 +109,5 @@ class DcaAdapter(AdapterBase):
             return cls
 
     def _postprocess_predictions(self, raw_predictions):
-        return raw_predictions.reshape(self._image_size, self._image_size).astype(np.uint8)
+        res = raw_predictions.reshape(self._image_size, self._image_size).astype(np.uint8)
+        return res

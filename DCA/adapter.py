@@ -21,7 +21,6 @@ from pathlib import Path
 from albumentations import Normalize, Compose
 
 from common.adapter.adapter_base import AdapterBase
-from utils import max_power_of_2
 from DCA.utils.my_tools import pre_slide
 from DCA.module.Encoder import Deeplabv2
 
@@ -43,12 +42,12 @@ class DcaAdapter(AdapterBase):
             model (Path): path to pretrained model weights
             device (str): PyTorch device to run network on
         """
-        self._image_size = 0
         self._factor = factor
         self._model = model
         self._device = device
 
     def process(self, image: np.ndarray):
+        shape = image.shape[:-1]
         image = self._transform_image(image)
         model = self._build_model()
         raw_predictions = self._process(model, image)
@@ -56,8 +55,6 @@ class DcaAdapter(AdapterBase):
         return predictions
 
     def _transform_image(self, image: np.ndarray):
-        self._image_size = max_power_of_2(min(image.shape[0], image.shape[1]))
-        image = cv2.resize(image, (self._image_size, self._image_size), interpolation=cv2.INTER_AREA)
         mean = np.mean(image, axis=(0, 1))
         std = np.std(image, axis=(0, 1))
         transformer = Compose([
@@ -96,18 +93,18 @@ class DcaAdapter(AdapterBase):
         return model
 
     def _process(self, model, image):
+        shape = image.shape[2], image.shape[3]
         with torch.no_grad():
             cls = pre_slide(
                 model=model,
                 image=image,
                 num_classes=7,
-                tile_size=(self._image_size // self._factor, self._image_size // self._factor),
+                tile_size=(image.shape[2] // self._factor, image.shape[3] // self._factor),
                 tta=True,
                 device=self._device
             )
-            cls = cls.argmax(dim=1).to(self._device).numpy()
+            cls = cls.argmax(dim=1).to(self._device).numpy().reshape(shape).astype(np.uint8)
             return cls
 
     def _postprocess_predictions(self, raw_predictions):
-        res = raw_predictions.reshape(self._image_size, self._image_size).astype(np.uint8)
-        return res
+        return raw_predictions

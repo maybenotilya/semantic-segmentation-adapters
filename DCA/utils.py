@@ -16,13 +16,6 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 
-def max_power_of_2(num: int):
-    p: int = 2
-    while p * 2 <= num:
-        p *= 2
-    return p
-
-
 def get_args():
     parser = ArgumentParser()
     parser.add_argument("-f", "--factor", type=int, default=2,

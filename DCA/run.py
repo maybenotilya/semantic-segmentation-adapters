@@ -42,6 +42,7 @@ if __name__ == "__main__":
     for file_path in input_dir.iterdir():
         logging.info(f" Image {file_path}")
         image = imread(file_path)
+        logging.info(f"Image shape: {image.shape}")
         mask = adapter.process(image)
         output_path = output_dir / Path(file_path.stem).with_suffix('.npy')
         logging.info(f" Saving to {output_path}")

@@ -54,5 +54,4 @@ class LinkNetAdapter(AdapterBase):
         pred = (raw_predictions > 0.5).squeeze().astype("float32")
         pred = cv2.resize(pred, self._image_shape[::-1])
         pred = (pred > 0.5).astype(int)
-        pred[pred == 1] = 240
         return pred

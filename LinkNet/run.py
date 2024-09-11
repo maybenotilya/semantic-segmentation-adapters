@@ -4,6 +4,7 @@ import logging
 from pathlib import Path
 
 from common.utils.common_utils import get_device_by_name
+from common.utils.infer import Inferencer
 from adapter import LinkNetAdapter
 from utils import get_args
 
@@ -16,17 +17,16 @@ if __name__ == "__main__":
     device = get_device_by_name(args.device)
 
     adapter = LinkNetAdapter(model_path=args.model, device=device)
+    classes = ["road"]
 
     images_dir = args.images
-    masks_dir = args.masks
     output_dir = args.output
+    masks_dir = args.masks if args.metrics else None
 
-    for image_path in images_dir.iterdir():
-        logging.info(f" Image {image_path}")
-        image = cv2.cvtColor(cv2.imread(image_path), cv2.COLOR_BGR2RGB)
+    infer = Inferencer(adapter, classes, images_dir, output_dir, masks_dir)
+    infer()
 
-        mask = adapter.process(image)
-
-        output_path = output_dir / Path(image_path.stem).with_suffix(".png")
-        logging.info(f" Saving to {output_path}")
-        cv2.imwrite(output_path, mask)
+    metrics = infer.metrics
+    if metrics is not None:
+        for class_name, class_metrics in metrics.items():
+            logging.info(f"{class_name}\n{class_metrics}    ")

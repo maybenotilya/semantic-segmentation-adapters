@@ -17,6 +17,7 @@ class LinkNetAdapter(AdapterBase):
     def __init__(self, model_path: Path, device: str):
         """
         Args:
+            model_path (Path): Path to model in segmentation-models format
             device (str): PyTorch device to run network on
         """
         self._model_path = model_path

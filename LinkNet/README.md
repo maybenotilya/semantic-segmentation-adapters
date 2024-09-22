@@ -4,7 +4,7 @@ This folder contains adapter and Dockerfile for LinkNet algorithm for roads sema
 ## Building Docker Image
 Build docker image from parent directory using `Dockerfile`:
 ```
-docker build . -t linknet -f DCA/Dockerfile
+docker build . -t linknet -f LinkNet/Dockerfile
 ```
 
 ## Running Docker Container

@@ -18,15 +18,40 @@ from pathlib import Path
 
 def get_args():
     parser = ArgumentParser()
-    parser.add_argument("-f", "--factor", type=int, default=2,
-                        help="Factor shows how images must be scaled to create patches, for factor = n there will be "
-                             "n^2 patches (default: 2)")
-    parser.add_argument("-m", "--model", type=Path, default=Path("/", "DCA", "weights", "Urban.pth"),
-                        help="Pretrained model path (default: weights/Urban.pth)")
-    parser.add_argument("-d", "--device", type=str, default="cuda",
-                        help="Which device to run network on (default: GPU)")
-    parser.add_argument("-i", "--input", type=Path, default=Path("/", "DCA", "input"),
-                        help="Images input folder")
-    parser.add_argument("-o", "--output", type=Path, default=Path("/", "DCA", "output"),
-                        help="Masks output folder")
+    parser.add_argument(
+        "-f",
+        "--factor",
+        type=int,
+        default=2,
+        help="Factor shows how images must be scaled to create patches, for factor = n there will be "
+        "n^2 patches (default: 2)",
+    )
+    parser.add_argument(
+        "-m",
+        "--model",
+        type=Path,
+        default=Path("/", "DCA", "weights", "Urban.pth"),
+        help="Pretrained model path (default: weights/Urban.pth)",
+    )
+    parser.add_argument(
+        "-d",
+        "--device",
+        type=str,
+        default="cuda",
+        help="Which device to run network on (default: GPU)",
+    )
+    parser.add_argument(
+        "-i",
+        "--input",
+        type=Path,
+        default=Path("/", "DCA", "input"),
+        help="Images input folder",
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        type=Path,
+        default=Path("/", "DCA", "output"),
+        help="Masks output folder",
+    )
     return parser.parse_args()

@@ -30,12 +30,7 @@ class DcaAdapter(AdapterBase):
     Adapter to work with DCA algorithm
     """
 
-    def __init__(
-            self,
-            factor: int,
-            model: Path,
-            device: str
-    ):
+    def __init__(self, factor: int, model: Path, device: str):
         """
         Args:
             factor (int): factor to divide image into patches
@@ -57,37 +52,39 @@ class DcaAdapter(AdapterBase):
     def _transform_image(self, image: np.ndarray):
         mean = np.mean(image, axis=(0, 1))
         std = np.std(image, axis=(0, 1))
-        transformer = Compose([
-            Normalize(mean=mean,
-                      std=std,
-                      max_pixel_value=1, always_apply=True),
-            ever.preprocess.albu.ToTensor()
-        ], is_check_shapes=False)
+        transformer = Compose(
+            [
+                Normalize(mean=mean, std=std, max_pixel_value=1, always_apply=True),
+                ever.preprocess.albu.ToTensor(),
+            ],
+            is_check_shapes=False,
+        )
         blob = transformer(image=image)
         image = blob["image"].to(self._device)
         image = image[None, :]
         return image
 
     def _build_model(self):
-        model = Deeplabv2(dict(
-            backbone=dict(
-                resnet_type="resnet50",
-                output_stride=16,
-                pretrained=True,
-            ),
-            multi_layer=True,
-            cascade=False,
-            use_ppm=True,
-            ppm=dict(
+        model = Deeplabv2(
+            dict(
+                backbone=dict(
+                    resnet_type="resnet50",
+                    output_stride=16,
+                    pretrained=True,
+                ),
+                multi_layer=True,
+                cascade=False,
+                use_ppm=True,
+                ppm=dict(
+                    num_classes=7,
+                    use_aux=False,
+                    fc_dim=2048,
+                ),
+                inchannels=2048,
                 num_classes=7,
-                use_aux=False,
-                fc_dim=2048,
-            ),
-            inchannels=2048,
-            num_classes=7
-        )).to(self._device)
-        model_state_dict = torch.load(self._model,
-                                      map_location=self._device)
+            )
+        ).to(self._device)
+        model_state_dict = torch.load(self._model, map_location=self._device)
         model.load_state_dict(model_state_dict, strict=True)
         model.eval()
         return model
@@ -99,11 +96,20 @@ class DcaAdapter(AdapterBase):
                 model=model,
                 image=image,
                 num_classes=7,
-                tile_size=(image.shape[2] // self._factor, image.shape[3] // self._factor),
+                tile_size=(
+                    image.shape[2] // self._factor,
+                    image.shape[3] // self._factor,
+                ),
                 tta=True,
-                device=self._device
+                device=self._device,
             )
-            cls = cls.argmax(dim=1).to(self._device).numpy().reshape(shape).astype(np.uint8)
+            cls = (
+                cls.argmax(dim=1)
+                .to(self._device)
+                .numpy()
+                .reshape(shape)
+                .astype(np.uint8)
+            )
             return cls
 
     def _postprocess_predictions(self, raw_predictions):

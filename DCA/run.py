@@ -44,6 +44,6 @@ if __name__ == "__main__":
         image = imread(file_path)
         logging.info(f"Image shape: {image.shape}")
         mask = adapter.process(image)
-        output_path = output_dir / Path(file_path.stem).with_suffix('.npy')
+        output_path = output_dir / Path(file_path.stem).with_suffix(".npy")
         logging.info(f" Saving to {output_path}")
         np.save(output_path, mask)
